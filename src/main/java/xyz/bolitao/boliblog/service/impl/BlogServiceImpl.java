@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import xyz.bolitao.boliblog.entity.dbentity.MBlog;
 import xyz.bolitao.boliblog.mapper.MBlogMapper;
-import xyz.bolitao.boliblog.service.MBlogService;
+import xyz.bolitao.boliblog.service.BlogService;
 
 @Service
-public class MBlogServiceImpl extends ServiceImpl<MBlogMapper, MBlog> implements MBlogService {
+public class BlogServiceImpl extends ServiceImpl<MBlogMapper, MBlog> implements BlogService {
 
 }
