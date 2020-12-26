@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author tblsy
+ * 分页配置
+ *
+ * @author bolitao
  */
 @Configuration
 @MapperScan("xyz.bolitao.boliblog.mapper")

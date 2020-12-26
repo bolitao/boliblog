@@ -9,6 +9,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,12 +44,14 @@ public class AccountController {
     public ResponseEntity<Result<LoginRetDTO>> login(@Validated @RequestBody LoginDto loginDto,
                                                      HttpServletResponse response) {
         // TODO: 已登录则直接返回
+        // TODO: 没调用 shiro 的 login。于是 logout 接口也会提示权限相关的错误。
 
         MUser user = userService.getOne(Wrappers.lambdaQuery(MUser.class).eq(MUser::getUsername,
                 loginDto.getUsername()));
-        Assert.notNull(user, "用户不存在");
+        // 防止穷举用户名，不返回“未找到用户”提示
+        Assert.notNull(user, "账号或密码错误");
         if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
-            return ResponseEntity.ok(new Result<>("账号或密码有误"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("账号或密码有误"));
         }
         String jwt = jwtUtil.generateToken(user.getId());
         response.setHeader("Authorization", jwt);
@@ -61,7 +64,7 @@ public class AccountController {
         updateUser.setId(user.getId());
         userService.updateById(updateUser);
 
-        return ResponseEntity.ok(new Result<>(loginRetDTO));
+        return ResponseEntity.ok(new Result<>("登陆成功", loginRetDTO));
     }
 
     @RequiresAuthentication
