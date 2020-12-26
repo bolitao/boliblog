@@ -1,13 +1,13 @@
 package xyz.bolitao.boliblog.controller;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.bolitao.boliblog.entity.dbentity.MUser;
 import xyz.bolitao.boliblog.entity.dto.LoginDto;
+import xyz.bolitao.boliblog.entity.dto.LoginRetDTO;
 import xyz.bolitao.boliblog.service.UserService;
 import xyz.bolitao.boliblog.util.JwtUtil;
 import xyz.bolitao.boliblog.util.Result;
@@ -38,8 +39,8 @@ public class AccountController {
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "login")
-    public ResponseEntity<Result> login(@Validated @RequestBody LoginDto loginDto,
-                                        HttpServletResponse response) {
+    public ResponseEntity<Result<LoginRetDTO>> login(@Validated @RequestBody LoginDto loginDto,
+                                                     HttpServletResponse response) {
         MUser user = userService.getOne(Wrappers.lambdaQuery(MUser.class).eq(MUser::getUsername,
                 loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
@@ -49,12 +50,9 @@ public class AccountController {
         String jwt = jwtUtil.generateToken(user.getId());
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-control-Expose-headers", "Authorization");
-        return ResponseEntity.ok(new Result<>(MapUtil.builder()
-                .put("id", user.getId())
-                .put("username", user.getUsername())
-                .put("avatar", user.getAvatar())
-                .put("email", user.getEmail())
-                .map()));
+        LoginRetDTO loginRetDTO = new LoginRetDTO();
+        BeanUtils.copyProperties(user, loginRetDTO);
+        return ResponseEntity.ok(new Result<>(loginRetDTO));
     }
 
     @RequiresAuthentication

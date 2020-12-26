@@ -12,7 +12,7 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
 bolitao:
   conf:
-    secret: token secret
+    secret: thisisatestjwtsecreteyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQthisisatestjwtsecret!
     expire: 604800
     header: Authorization
 server:
