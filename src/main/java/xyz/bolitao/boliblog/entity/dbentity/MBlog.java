@@ -6,43 +6,44 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value="xyz-bolitao-boliblog-entity-dbentity-MBlog")
+import java.util.Date;
+
+@ApiModel(value = "xyz-bolitao-boliblog-entity-dbentity-MBlog")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "m_blog")
 public class MBlog {
     @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Long id;
 
     @TableField(value = "user_id")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Long userId;
 
     @TableField(value = "title")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private String title;
 
     @TableField(value = "description")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private String description;
 
     @TableField(value = "content")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private String content;
 
     @TableField(value = "created")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Date created;
 
     @TableField(value = "`status`")
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Byte status;
 
     public static final String COL_ID = "id";
