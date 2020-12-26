@@ -38,7 +38,7 @@ public class JwtFilter extends AuthenticatingFilter {
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String jwt = request.getHeader("Authorization");
-        if (jwt == null || jwt.trim().equals("")) {
+        if (jwt == null || "".equals(jwt.trim())) {
             return null;
         }
         return new JwtToken(jwt);
