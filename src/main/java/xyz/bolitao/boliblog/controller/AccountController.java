@@ -23,6 +23,7 @@ import xyz.bolitao.boliblog.util.JwtUtil;
 import xyz.bolitao.boliblog.util.Result;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -41,6 +42,8 @@ public class AccountController {
     @ApiOperation(value = "login")
     public ResponseEntity<Result<LoginRetDTO>> login(@Validated @RequestBody LoginDto loginDto,
                                                      HttpServletResponse response) {
+        // TODO: 已登录则直接返回
+
         MUser user = userService.getOne(Wrappers.lambdaQuery(MUser.class).eq(MUser::getUsername,
                 loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
@@ -52,6 +55,12 @@ public class AccountController {
         response.setHeader("Access-control-Expose-headers", "Authorization");
         LoginRetDTO loginRetDTO = new LoginRetDTO();
         BeanUtils.copyProperties(user, loginRetDTO);
+
+        // 更新最后登录时间
+        MUser updateUser = new MUser(new Date());
+        updateUser.setId(user.getId());
+        userService.updateById(updateUser);
+
         return ResponseEntity.ok(new Result<>(loginRetDTO));
     }
 

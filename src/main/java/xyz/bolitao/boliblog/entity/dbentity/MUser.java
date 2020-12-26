@@ -58,6 +58,10 @@ public class MUser {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastLogin;
 
+    public MUser(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
     public static final String COL_ID = "id";
 
     public static final String COL_USERNAME = "username";

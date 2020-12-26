@@ -105,6 +105,13 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- p6spy -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
         <!-- freemarker -->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
