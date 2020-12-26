@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @ApiModel(value = "xyz-bolitao-boliblog-entity-dbentity-MUser")
@@ -19,35 +21,38 @@ import java.util.Date;
 @TableName(value = "m_user")
 public class MUser {
     @TableId(value = "id", type = IdType.INPUT)
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "id")
     private Long id;
 
     @TableField(value = "username")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "username")
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     @TableField(value = "avatar")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "avatar")
     private String avatar;
 
     @TableField(value = "email")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "email")
+    @NotBlank(message = "邮箱不能为空")
+    @Email(message = "邮箱格式有误")
     private String email;
 
     @TableField(value = "`password`")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "password")
     private String password;
 
     @TableField(value = "`status`")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "status")
     private Integer status;
 
     @TableField(value = "created")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "create date")
     private Date created;
 
     @TableField(value = "last_login")
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "last login date")
     private Date lastLogin;
 
     public static final String COL_ID = "id";

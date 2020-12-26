@@ -10,3 +10,14 @@ spring:
       quiet-period: 2200ms
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
+bolitao:
+  conf:
+    secret: token secret
+    expire: 604800
+    header: Authorization
+server:
+  port: 8899
+shiro-redis:
+  enabled: true
+  redis-manager:
+    host: 127.0.0.1:6379
