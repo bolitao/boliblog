@@ -1,5 +1,6 @@
 package xyz.bolitao.boliblog.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class Result<T> {
     /**
      * http status
      */
-    // @JsonIgnore
+    @JsonIgnore
     private HttpStatus httpStatus;
     /**
      * business code
