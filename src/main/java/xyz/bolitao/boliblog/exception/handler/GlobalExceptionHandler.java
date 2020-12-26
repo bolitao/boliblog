@@ -39,6 +39,20 @@ public class GlobalExceptionHandler<T> {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Result<T>> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("[业务]校验异常: " + e.getMessage()));
+//        BindingResult bindingResult = e.getBindingResult();
+//        ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
+        String message;
+        if (e.getBindingResult().getFieldError() == null) {
+            message = e.getMessage();
+        } else {
+            message = e.getBindingResult().getFieldError().getDefaultMessage();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("[业务]校验异常: " + message));
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<Result<String>> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("参数错误: " + e.getMessage()));
     }
 }

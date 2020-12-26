@@ -39,6 +39,17 @@ public class Result<T> {
         this.message = message;
     }
 
+    public Result(String message, T data) {
+        this.message = message;
+        this.data = data;
+    }
+
+    public Result(String code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
     public Result<T> httpStatus(HttpStatus httpStatus) {
         this.httpStatus = httpStatus;
         return this;
