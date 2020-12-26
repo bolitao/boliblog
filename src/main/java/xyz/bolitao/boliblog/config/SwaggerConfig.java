@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(this.appInfo())
                 .select()
-                // .apis(RequestHandlerSelectors.basePackage("xyz.bolitao.java_starter.web"))
+                // .apis(RequestHandlerSelectors.basePackage("xyz.bolitao."))
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
@@ -28,7 +28,7 @@ public class SwaggerConfig {
 
     private ApiInfo appInfo() {
         return new ApiInfoBuilder()
-                .title("test api")
+                .title("boli blog api")
                 .contact(new Contact(
                         "bolitao",
                         "https://bolitao.xyz",

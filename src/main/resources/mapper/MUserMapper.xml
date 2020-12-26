@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.bolitao.boliblog.mapper.MUserMapper">
+    <resultMap id="BaseResultMap" type="xyz.bolitao.boliblog.entity.dbentity.MUser">
+        <!--@mbg.generated-->
+        <!--@Table m_user-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, username, avatar, email, `password`, `status`, created, last_login
+    </sql>
+</mapper>
