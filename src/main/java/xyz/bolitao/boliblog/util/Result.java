@@ -32,6 +32,7 @@ public class Result<T> {
     private T data;
 
     public Result(String code, T data) {
+        this.code = code;
         this.data = data;
     }
 
