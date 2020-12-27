@@ -1,6 +1,5 @@
 package xyz.bolitao.boliblog.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -40,7 +39,7 @@ public class BlogController {
         Page<MBlog> page = new Page<>(currentPage, 5);
         IPage<MBlog> pageableData = blogService.page(page,
                 Wrappers.lambdaQuery(MBlog.class).orderByDesc(MBlog::getCreated));
-        return ResponseEntity.ok(new Result<>(pageableData));
+        return ResponseEntity.ok(new Result<>("1", pageableData));
     }
 
     @GetMapping("{blogId}")
@@ -48,7 +47,7 @@ public class BlogController {
     public ResponseEntity<Result<MBlog>> getSpecBlog(@PathVariable Long blogId) {
         MBlog blog = blogService.getById(blogId);
         Assert.notNull(blog, "不存在这篇博文");
-        return ResponseEntity.ok(new Result<>(blog));
+        return ResponseEntity.ok(new Result<>("1", blog));
     }
 
     @RequiresAuthentication
@@ -59,7 +58,7 @@ public class BlogController {
         blog.setStatus(new Byte("1"));
         blog.setCreated(new Date());
         blogService.save(blog);
-        return ResponseEntity.ok(new Result<>("新增成功"));
+        return ResponseEntity.ok(new Result<>("1", "新增成功"));
     }
 
     @RequiresAuthentication
@@ -73,6 +72,6 @@ public class BlogController {
         BeanUtils.copyProperties(oldBlog, newBlog);
         BeanUtils.copyProperties(updateBean, newBlog, "id", "userId", "created", "status");
         blogService.updateById(newBlog);
-        return ResponseEntity.ok(new Result<>("博文修改成功"));
+        return ResponseEntity.ok(new Result<>("1", "博文修改成功"));
     }
 }

@@ -61,7 +61,7 @@ public class JwtFilter extends AuthenticatingFilter {
             if (claim == null || jwtUtil.isTokenExpired(claim.getExpiration())) {
 //                throw new ExpiredCredentialsException("token已失效，请重新登录");
                 // TODO: 下面的异常未被拦截，成为 ResponseEntity 形式
-                response.getWriter().println(JSONUtil.toJsonStr(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("token 失效"))));
+                response.getWriter().println(JSONUtil.toJsonStr(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("1", "token 失效"))));
             }
 
             // 登录
@@ -78,7 +78,7 @@ public class JwtFilter extends AuthenticatingFilter {
         Throwable throwable = e.getCause() == null ? e : e.getCause();
         try {
             // TODO: 直接抛出异常
-            httpServletResponse.getWriter().println(JSONUtil.toJsonStr(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<Throwable>(throwable))));
+            httpServletResponse.getWriter().println(JSONUtil.toJsonStr(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<Throwable>("1", throwable))));
         } catch (IOException ioException) {
             log.error("登陆出错", ioException);
         }

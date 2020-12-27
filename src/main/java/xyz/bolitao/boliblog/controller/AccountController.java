@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.bolitao.boliblog.entity.dbentity.MUser;
 import xyz.bolitao.boliblog.entity.dto.LoginDto;
 import xyz.bolitao.boliblog.entity.dto.LoginRetDTO;
+import xyz.bolitao.boliblog.exception.entity.BaseException;
 import xyz.bolitao.boliblog.service.UserService;
 import xyz.bolitao.boliblog.util.JwtUtil;
 import xyz.bolitao.boliblog.util.Result;
@@ -51,7 +52,8 @@ public class AccountController {
         // 防止穷举用户名，不返回“未找到用户”提示
         Assert.notNull(user, "账号或密码错误");
         if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("账号或密码有误"));
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("1", "账号或密码有误", null));
+            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码有误", "10001");
         }
         String jwt = jwtUtil.generateToken(user.getId());
         response.setHeader("Authorization", jwt);
@@ -64,14 +66,14 @@ public class AccountController {
         updateUser.setId(user.getId());
         userService.updateById(updateUser);
 
-        return ResponseEntity.ok(new Result<>("登陆成功", loginRetDTO));
+        return ResponseEntity.ok(new Result<>("1", "登陆成功", loginRetDTO));
     }
 
     @RequiresAuthentication
     @PostMapping(value = "/logout")
     @ApiOperation(value = "logout")
-    public ResponseEntity logout() {
+    public ResponseEntity<Result<String>> logout() {
         SecurityUtils.getSubject().logout();
-        return ResponseEntity.ok(new Result<>("登出成功"));
+        return ResponseEntity.ok(new Result<>("1", "登出成功"));
     }
 }

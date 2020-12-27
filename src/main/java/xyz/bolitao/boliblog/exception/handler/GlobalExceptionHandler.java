@@ -21,19 +21,24 @@ public class GlobalExceptionHandler<T> {
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<Result<T>> runtimeExceptionHandler(RuntimeException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>("系统异常: " + e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>("-1",
+                "系统异常: " + e.getMessage(), null));
     }
 
     @ExceptionHandler(value = ShiroException.class)
     public ResponseEntity<Result<T>> runtimeExceptionHandler(ShiroException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("Shiro 异常: " + e.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("20001",
+                "Shiro 异常: " + e.getMessage(), null));
     }
 
     @ExceptionHandler(value = BaseException.class)
     public ResponseEntity<Result<T>> baseExceptionHandler(BaseException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(e.getHttpStatus() != null ? e.getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR).body(new Result<>("业务异常: " + e.getMessage()));
+        // TODO: 枚举。 -2 为通用基础业务错误
+        String code = (e.getCode() == null || "".equals(e.getCode())) ? "-2" : e.getCode();
+        return ResponseEntity.status(e.getHttpStatus() != null ? e.getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Result<>(code, "业务异常: " + e.getMessage(), null));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -47,12 +52,13 @@ public class GlobalExceptionHandler<T> {
         } else {
             message = e.getBindingResult().getFieldError().getDefaultMessage();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("[业务]校验异常: " + message));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("21000", "[业务]校验异常: " + message, null));
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public ResponseEntity<Result<String>> handleIllegalArgumentException(IllegalArgumentException e) {
+    public ResponseEntity<Result<T>> handleIllegalArgumentException(IllegalArgumentException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("参数错误: " + e.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result<>("22000", "参数错误: " + e.getMessage(),
+                null));
     }
 }

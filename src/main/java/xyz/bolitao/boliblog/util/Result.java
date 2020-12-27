@@ -31,16 +31,7 @@ public class Result<T> {
      */
     private T data;
 
-    public Result(T data) {
-        this.data = data;
-    }
-
-    public Result(String message) {
-        this.message = message;
-    }
-
-    public Result(String message, T data) {
-        this.message = message;
+    public Result(String code, T data) {
         this.data = data;
     }
 

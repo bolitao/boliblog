@@ -16,4 +16,5 @@ import org.springframework.http.HttpStatus;
 public class BaseException extends RuntimeException {
     private HttpStatus httpStatus;
     private String message;
+    private String code;
 }

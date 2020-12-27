@@ -30,13 +30,13 @@ public class UserController {
     @GetMapping(value = "test/{id}")
     @RequiresAuthentication
     public ResponseEntity<Result<MUser>> testGetOne(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(userService.getById(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>("1", userService.getById(id)));
     }
 
     @ApiOperation(value = "save")
     @PostMapping(value = "/save")
     public ResponseEntity<Result<Boolean>> save(@Validated @RequestBody MUser user) {
         boolean dealResult = userService.save(user);
-        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dealResult));
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>("1",dealResult));
     }
 }
