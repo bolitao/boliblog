@@ -50,10 +50,13 @@ public class AccountController {
         MUser user = userService.getOne(Wrappers.lambdaQuery(MUser.class).eq(MUser::getUsername,
                 loginDto.getUsername()));
         // 防止穷举用户名，不返回“未找到用户”提示
-        Assert.notNull(user, "账号或密码错误");
+        // Assert.notNull(user, "账号或密码错误");
+        if (user == null) {
+            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码错误", "10001");
+        }
         if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Result<>("1", "账号或密码有误", null));
-            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码有误", "10001");
+            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码错误", "10001");
         }
         String jwt = jwtUtil.generateToken(user.getId());
         response.setHeader("Authorization", jwt);
