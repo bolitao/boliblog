@@ -11,8 +11,6 @@ import xyz.bolitao.boliblog.exception.entity.BaseException;
 import xyz.bolitao.boliblog.util.Result;
 
 /**
- * TODO: log
- *
  * @author bolitao
  */
 @RestControllerAdvice
