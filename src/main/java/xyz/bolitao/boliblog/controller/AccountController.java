@@ -1,6 +1,6 @@
 package xyz.bolitao.boliblog.controller;
 
-import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +32,8 @@ import java.util.Date;
 public class AccountController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private static final String accountOrPasswordWrongMessage = "账号或密码错误";
+    private static final String accountOrPasswordWrongCode = "10001";
 
     @Autowired
     public AccountController(UserService userService, JwtUtil jwtUtil) {
@@ -49,10 +51,11 @@ public class AccountController {
         MUser user = userService.getOne(Wrappers.lambdaQuery(MUser.class).eq(MUser::getUsername,
                 loginDto.getUsername()));
         if (user == null) {
-            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码错误", "10001");
+            throw new BaseException(HttpStatus.UNAUTHORIZED, accountOrPasswordWrongMessage, accountOrPasswordWrongCode);
         }
-        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
-            throw new BaseException(HttpStatus.UNAUTHORIZED, "账号或密码错误", "10001");
+//        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
+        if (!BCrypt.checkpw(loginDto.getPassword(), user.getPassword())) {
+            throw new BaseException(HttpStatus.UNAUTHORIZED, accountOrPasswordWrongMessage, accountOrPasswordWrongCode);
         }
 
         String jwt = jwtUtil.generateToken(user.getId());
